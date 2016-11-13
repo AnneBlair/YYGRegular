@@ -10,7 +10,7 @@
 import Foundation
 import UIKit
 
-func printLogDebug<T>(_ message: T,
+public func printLogDebug<T>(_ message: T,
                    file: String = #file,
                    method: String = #function,
                    line: Int = #line
