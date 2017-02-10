@@ -21,22 +21,83 @@ public func printLogDebug<T>(_ message: T,
     #endif
 }
 
-/// 根据相应的组数对号入座
-///
-/// - sectionNum1: 第一组
-/// - sectionNum2: 第二组
-/// - sectionNum3: 第三组
-/// - sectionNum4: 第四组
-enum sectionNum: Int {
-    case sectionNum1
-    case sectionNum2
-    case sectionNum3
-    case sectionNum4
-}
 
 let UIScreeWidth: CGFloat = UIScreen.main.bounds.size.width
 let UIScreeHeight: CGFloat = UIScreen.main.bounds.size.height
 
-
+extension UIView {
+    
+    var x: CGFloat {
+        get {
+            return frame.origin.x
+        }
+        set {
+            frame = CGRect(x: newValue, y: frame.origin.y, width: frame.width, height: frame.height)
+        }
+    }
+    
+    var y: CGFloat {
+        get {
+           return frame.origin.y
+        }
+        set {
+            frame = CGRect(x: frame.origin.x, y: newValue, width: frame.width, height: frame.height)
+        }
+    }
+    
+    var wide: CGFloat {
+        get {
+            return frame.size.width
+        }
+        set {
+            frame = CGRect(x: frame.origin.x, y: newValue, width: frame.origin.x + newValue, height: frame.height)
+        }
+    }
+    
+    var height: CGFloat {
+        get {
+            return frame.size.height
+        }
+        set {
+            frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.origin.y + newValue)
+        }
+    }
+    
+    var origin: CGPoint {
+        get {
+            return frame.origin
+        }
+        set {
+            frame.origin = newValue
+        }
+    }
+    
+    var size: CGSize {
+        get {
+            return frame.size
+        }
+        set {
+            frame.size = newValue
+        }
+    }
+    
+    var right: CGFloat {
+        get {
+            return frame.maxX
+        }
+        set {
+            frame = CGRect(x: newValue-frame.width, y: frame.minY, width: frame.width, height: frame.height)
+        }
+    }
+    
+    var bottom: CGFloat {
+        get {
+            return frame.maxY
+        }
+        set {
+            frame = CGRect(x: frame.minX, y: newValue-frame.height, width: frame.width, height: frame.height)
+        }
+    }
+}
 
 		
