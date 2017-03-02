@@ -3,7 +3,7 @@
 ```
 我是： 语歌
 
-个人网站：www.aiyinyu.com
+个人博客：blog.aiyinyu.com
 
 
 ```
@@ -156,4 +156,101 @@ let isIphoneNum: String = "1\\d{10}"
 17./// 邮政编码
 let zipCode: String = "[1-9]\\d{5}"
 ```
+
+##新增加一些方法的扩展。如：UIView的扩展，富文本的扩展，UIColor的扩展，线程安全使用的扩展
+###3.UIView的一些扩展
+####  主要是方便直接对视图控件x,y等等一系列的操作
+####  这个比较简单，不做介绍，主要是 set,get,集成后直接用就行
+
+```
+extension UIView {
+    
+    var x: CGFloat {
+        get {
+            return frame.origin.x
+        }
+        set {
+            frame = CGRect(x: newValue, y: frame.origin.y, width: frame.width, height: frame.height)
+        }
+    }
+    ........................
+```
+
+###4.线程安全操作
+#### 在Oc中为了防止多线程中对某些资源的安全访问 引用了
+`@synchronized`的操作,更多的关于多线程的知识 [点我](https://www.objccn.io/issue-2-1/),这里大量篇幅的描述，会使你得到更多的收获。这里不做陈述
+
+#### 在Swift中已经移除了`synchronized` 的使用，相应的 我们可以直接使用：
+`objc_sync_enter`
+>资源的操作
+`objc_sync_exit`
+#### 结合闭包的使用可以直接这样使用
+```
+public func synchronized(_ lock: AnyObject, closure: () -> ()) {
+    objc_sync_enter(lock)
+    closure()
+    objc_sync_exit(lock)
+}
+```
+#### 相应的执行的时候你可以这样：
+```
+var test = 0
+synchronized(test as AnyObject) {
+    test = 1     // test 在该作用域不会被其他线程改变
+    print(test)
+}
+/// 或者这样
+synchronized(test as AnyObject, closure: {
+    print(test)  // test 在该作用域不会被其他线程改变
+})
+```
+#### 这样你就可以愉快的使用了
+
+###5.对UIColor的扩展
+#### 都知道Xcode在8.0以后可以直接在代码中使用颜色编辑器，图片预览。这样大大的节省了我们的开发效率
+#### 而在于有时候的习惯的使用上来说,可能或多或少还有用代码来操作的,这里带给大家在使用代码的时候的一些方便
+##### 有时候在开发的过程中UI给的标注是 0xCE0755 这样的颜色标注,那么我们有时候就需要转换,当然在颜色编辑器里面是可以直接使用的。
+> 转换如下：
+
+```
+public extension UIColor {
+    
+    /// Init color without divide 255.0
+    ///
+    /// - Parameters:
+    ///   - r: (0 ~ 255) red
+    ///   - g: (0 ~ 255) green
+    ///   - b: (0 ~ 255) blue
+    ///   - a: (0 ~ 1) alpha
+    convenience init(r: Int, g: Int, b: Int, a: CGFloat) {
+        self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: a)
+    }
+    
+    /// Init color without divide 255.0
+    ///
+    /// - Parameters:
+    ///   - r: (0 ~ 255) red
+    ///   - g: (0 ~ 255) green
+    ///   - b: (0 ~ 1) alpha
+    convenience init(r: Int, g: Int, b: Int) {
+        self.init(r: r, g: g, b: b, a: 1)
+    }
+    
+    /// Init color with hex code
+    ///
+    /// - Parameter hex: hex code (eg. 0x00eeee)
+    convenience init(hex: Int) {
+        self.init(r: (hex & 0xff0000) >> 16, g: (hex & 0xff00) >> 8, b: (hex & 0xff), a: 1)
+    }
+    
+}
+```
+#### 这里要说的是主要原理就是: 先通过&运算,取得相应的颜色位,然后通过左移相应的位数来进行换算。这里就不多说了。[传送门](https://zh.wikipedia.org/wiki/%E4%BD%8D%E6%93%8D%E4%BD%9C)
+
+###6.富文本的一些操作,工程中非常清楚的介绍了使用,这里不做陈述了。
+##### 科学计数法转换
+##### 人民币的金额转换
+
+
+### 更新继续,如果您觉得对你有帮助希望你给个 星星 
 

@@ -11,9 +11,9 @@ import Foundation
 import UIKit
 
 public func printLogDebug<T>(_ message: T,
-                   file: String = #file,
-                   method: String = #function,
-                   line: Int = #line
+                          file: String = #file,
+                          method: String = #function,
+                          line: Int = #line
     )
 {
     #if DEBUG
@@ -21,9 +21,19 @@ public func printLogDebug<T>(_ message: T,
     #endif
 }
 
+/// 线程加锁
+///
+/// - Parameters:
+///   - lock: 加锁对象
+///   - dispose: 执行闭包函数,
+func synchronized(_ lock: AnyObject,dispose: ()->()) {
+    objc_sync_enter(lock)
+    dispose()
+    objc_sync_exit(lock)
+}
 
-let UIScreeWidth: CGFloat = UIScreen.main.bounds.size.width
-let UIScreeHeight: CGFloat = UIScreen.main.bounds.size.height
+public let UIScreeWidth: CGFloat = UIScreen.main.bounds.size.width
+public let UIScreeHeight: CGFloat = UIScreen.main.bounds.size.height
 
 extension UIView {
     
@@ -38,7 +48,7 @@ extension UIView {
     
     var y: CGFloat {
         get {
-           return frame.origin.y
+            return frame.origin.y
         }
         set {
             frame = CGRect(x: frame.origin.x, y: newValue, width: frame.width, height: frame.height)
@@ -100,7 +110,8 @@ extension UIView {
     }
 }
 
-// MARK: - Convenience methods for UIColor
+//MARK:            Convenience methods for UIColor        _________________________________________________________________________________________________
+
 public extension UIColor {
     
     /// Init color without divide 255.0
@@ -130,6 +141,7 @@ public extension UIColor {
     convenience init(hex: Int) {
         self.init(r: (hex & 0xff0000) >> 16, g: (hex & 0xff00) >> 8, b: (hex & 0xff), a: 1)
     }
+    
 }
 
-		
+
