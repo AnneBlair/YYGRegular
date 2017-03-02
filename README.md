@@ -182,7 +182,7 @@ extension UIView {
 
 #### 在Swift中已经移除了`synchronized` 的使用，相应的 我们可以直接使用：
 `objc_sync_enter`
->资源的操作
+///资源的操作
 `objc_sync_exit`
 #### 结合闭包的使用可以直接这样使用
 ```
