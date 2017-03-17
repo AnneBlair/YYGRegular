@@ -95,4 +95,11 @@ let isIphoneNum: String = "1\\d{10}"
 /// 邮政编码
 let zipCode: String = "[1-9]\\d{5}"
 
+/// 大于0的整数
+let integer = "[1-9]\\d"
+
+/// 字母
+let letter  = "^[A-Z]+$"
+
+
 

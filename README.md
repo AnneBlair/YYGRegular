@@ -251,6 +251,101 @@ public extension UIColor {
 ##### 科学计数法转换
 ##### 人民币的金额转换
 
+###7.对String的扩展,进行截取,插入操作
+```
+extension String {
+    /// 截取第一个到第任意位置
+    ///
+    /// - Parameter end: 结束的位值
+    /// - Returns: 截取后的字符串
+    func stringCut(end: Int) ->String{
+        printLogDebug(self.characters.count)
+        if !(end < characters.count) { return "截取超出范围" }
+        let sInde = index(startIndex, offsetBy: end)
+        return substring(to: sInde)
+    }
+    
+    /// 截取人任意位置到结束
+    ///
+    /// - Parameter end:
+    /// - Returns: 截取后的字符串
+    func stringCutToEnd(star: Int) -> String {
+        if !(star < characters.count) { return "截取超出范围" }
+        let sRang = index(startIndex, offsetBy: star)..<endIndex
+        return substring(with: sRang)
+    }
+    
+    /// 字符串任意位置插入
+    ///
+    /// - Parameters:
+    ///   - content: 插入内容
+    ///   - locat: 插入的位置
+    /// - Returns: 添加后的字符串
+    func stringInsert(content: String,locat: Int) -> String {
+        if !(locat < characters.count) { return "截取超出范围" }
+        let str1 = stringCut(end: locat)
+        let str2 = stringCutToEnd(star: locat)
+        return str1 + content + str2
+    }
+}
+```
+
+###8.延时使用,异步延时，主线程执行
+>使用：
+
+```
+	let sleep = delay(0.7) {
+        /// 执行代码
+    }
+```
+> 使用过程中不想执行了
+
+```
+	cancel(sleep)
+
+```
+
+##### 源码如下：
+```
+//MARK:            延时使用        ____________________________________________________________________________________________________
+
+typealias Task = (_ cancel : Bool) -> Void
+
+func delay(_ time: TimeInterval, task: @escaping ()->()) ->  Task? {
+    
+    func dispatch_later(block: @escaping ()->()) {
+        let t = DispatchTime.now() + time
+        DispatchQueue.main.asyncAfter(deadline: t, execute: block)
+    }
+    
+    var closure: (()->Void)? = task
+    var result: Task?
+    
+    let delayedClosure: Task = {
+        cancel in
+        if let internalClosure = closure {
+            if (cancel == false) {
+                DispatchQueue.main.async(execute: internalClosure)
+            }
+        }
+        closure = nil
+        result = nil
+    }
+    
+    result = delayedClosure
+    
+    dispatch_later {
+        if let delayedClosure = result {
+            delayedClosure(false)
+        }
+    }
+    return result
+}
+
+func cancel(_ task: Task?) {
+    task?(true)
+}
+```
 
 ### 更新继续,如果您觉得对你有帮助希望你给个 星星 
 

@@ -35,6 +35,9 @@ func synchronized(_ lock: AnyObject,dispose: ()->()) {
 public let UIScreeWidth: CGFloat = UIScreen.main.bounds.size.width
 public let UIScreeHeight: CGFloat = UIScreen.main.bounds.size.height
 
+public let NOW_WIDTH: CGFloat = (UIScreeWidth / 375.0)
+public let NOW_HEIGHT: CGFloat = (UIScreeHeight / 667.0)
+
 extension UIView {
     
     var x: CGFloat {
@@ -143,5 +146,57 @@ public extension UIColor {
     }
     
 }
+
+//MARK:            延时使用        ____________________________________________________________________________________________________
+
+typealias Task = (_ cancel : Bool) -> Void
+
+func delay(_ time: TimeInterval, task: @escaping ()->()) ->  Task? {
+    
+    func dispatch_later(block: @escaping ()->()) {
+        let t = DispatchTime.now() + time
+        DispatchQueue.main.asyncAfter(deadline: t, execute: block)
+    }
+    
+    var closure: (()->Void)? = task
+    var result: Task?
+    
+    let delayedClosure: Task = {
+        cancel in
+        if let internalClosure = closure {
+            if (cancel == false) {
+                DispatchQueue.main.async(execute: internalClosure)
+            }
+        }
+        closure = nil
+        result = nil
+    }
+    
+    result = delayedClosure
+    
+    dispatch_later {
+        if let delayedClosure = result {
+            delayedClosure(false)
+        }
+    }
+    return result
+}
+
+func cancel(_ task: Task?) {
+    task?(true)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

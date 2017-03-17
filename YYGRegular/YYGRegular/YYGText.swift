@@ -15,11 +15,11 @@ import UIKit
 ///   - content: 内容 Arry ["第一个"，"第二个"]
 ///   - size: 字体 Arry  [size1,size2]
 /// - Returns: 富文本
-public func setAttribute(color: [[CGFloat]],content:[String],size: [CGFloat])-> NSMutableAttributedString {
+public func setAttribute(color: [[Int]],content:[String],size: [CGFloat])-> NSMutableAttributedString {
     
     let str = NSMutableAttributedString()
     for i in 0..<color.count {
-        str.append(NSAttributedString(string: content[i], attributes: [NSForegroundColorAttributeName: UIColor(red: color[i][0]/255.0, green: color[i][1]/255.0, blue: color[i][2]/255.0, alpha: 1), NSFontAttributeName:UIFont.systemFont(ofSize: size[i])]))
+        str.append(NSAttributedString(string: content[i], attributes: [NSForegroundColorAttributeName: UIColor(hex: color[i][0]), NSFontAttributeName:UIFont.systemFont(ofSize: size[i])]))
     }
     return str
 }
@@ -48,3 +48,41 @@ extension NSNumber {
         return result!
     }
 }
+
+extension String {
+    /// 截取第一个到第任意位置
+    ///
+    /// - Parameter end: 结束的位值
+    /// - Returns: 截取后的字符串
+    func stringCut(end: Int) ->String{
+        printLogDebug(self.characters.count)
+        if !(end < characters.count) { return "截取超出范围" }
+        let sInde = index(startIndex, offsetBy: end)
+        return substring(to: sInde)
+    }
+    
+    /// 截取人任意位置到结束
+    ///
+    /// - Parameter end:
+    /// - Returns: 截取后的字符串
+    func stringCutToEnd(star: Int) -> String {
+        if !(star < characters.count) { return "截取超出范围" }
+        let sRang = index(startIndex, offsetBy: star)..<endIndex
+        return substring(with: sRang)
+    }
+    
+    /// 字符串任意位置插入
+    ///
+    /// - Parameters:
+    ///   - content: 插入内容
+    ///   - locat: 插入的位置
+    /// - Returns: 添加后的字符串
+    func stringInsert(content: String,locat: Int) -> String {
+        if !(locat < characters.count) { return "截取超出范围" }
+        let str1 = stringCut(end: locat)
+        let str2 = stringCutToEnd(star: locat)
+        return str1 + content + str2
+    }
+}
+
+
