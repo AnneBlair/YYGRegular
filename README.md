@@ -345,5 +345,5 @@ func cancel(_ task: Task?) {
 }
 ```
 
-### 更新继续,如果您觉得对你有帮助希望你给个 星星 
+### 更新继续,如果您觉得对你有帮助 那就来个 [star](https://github.com/AnneBlair/YYGRegular/stargazers)
 
