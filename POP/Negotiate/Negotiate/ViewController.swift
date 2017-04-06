@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         SessionRequestSender().send(goodsParticulars(goodsId: "580", method: .post), analysis: { ParticularsAnalysis in
+            
+            print(ParticularsAnalysis?.tempData as Any)
 //            ParticularsAnalysis?.message
 //            ParticularsAnalysis?.tempData
             

@@ -83,6 +83,36 @@ extension String {
         let str2 = stringCutToEnd(star: locat)
         return str1 + content + str2
     }
+    
+    /// 输入字符串 输出数组
+    /// e.g  "qwert" -> ["q","w","e","r","t"]
+    /// - Returns: ["q","w","e","r","t"]
+    func stringToArr() -> [String] {
+        let num = characters.count
+        if !(num > 0) { return [""] }
+        var arr: [String] = []
+        for i in 0..<num {
+            let tempStr: String = self[self.index(self.startIndex, offsetBy: i)].description
+            arr.append(tempStr)
+        }
+        return arr
+    }
+    
+    /// 字符串截取         3  6
+    /// e.g let aaa = "abcdefghijklmnopqrstuvwxyz"  -> "cdef"
+    /// - Parameters:
+    ///   - start: 开始位置 3
+    ///   - end: 结束位置 6
+    /// - Returns: 截取后的字符串 "cdef"
+    func startToEnd(start: Int,end: Int) -> String {
+        if !(end < characters.count) || start > end { return "取值范围错误" }
+        var tempStr: String = ""
+        for i in start...end {
+            let temp: String = self[self.index(self.startIndex, offsetBy: i - 1)].description
+            tempStr += temp
+        }
+        return tempStr
+    }
 }
 
 
