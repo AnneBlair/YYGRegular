@@ -149,9 +149,9 @@ public extension UIColor {
 
 //MARK:            延时使用        ____________________________________________________________________________________________________
 
-typealias Task = (_ cancel : Bool) -> Void
+typealias TaskBlock = (_ cancel : Bool) -> Void
 
-func delay(_ time: TimeInterval, task: @escaping ()->()) ->  Task? {
+func delay(_ time: TimeInterval, task: @escaping ()->()) ->  TaskBlock? {
     
     func dispatch_later(block: @escaping ()->()) {
         let t = DispatchTime.now() + time
@@ -159,9 +159,9 @@ func delay(_ time: TimeInterval, task: @escaping ()->()) ->  Task? {
     }
     
     var closure: (()->Void)? = task
-    var result: Task?
+    var result: TaskBlock?
     
-    let delayedClosure: Task = {
+    let delayedClosure: TaskBlock = {
         cancel in
         if let internalClosure = closure {
             if (cancel == false) {
@@ -182,7 +182,7 @@ func delay(_ time: TimeInterval, task: @escaping ()->()) ->  Task? {
     return result
 }
 
-func cancel(_ task: Task?) {
+func cancel(_ task: TaskBlock?) {
     task?(true)
 }
 
