@@ -125,6 +125,14 @@ extension String {
         }
         return tempStr
     }
+    
+    /// 字符URL格式化
+    ///
+    /// - Returns: 格式化的 url
+    func stringEncoding() -> String {
+        let url = self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        return url!
+    }
 }
 
 
