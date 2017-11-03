@@ -22,15 +22,15 @@ extension SegueHandelr where Self: UIViewController, SegueIdentifier.RawValue ==
         performSegue(withIdentifier: segueIdentifier.rawValue, sender: nil)
     }
 }
-
-func viewController(forStoryboardName: String) -> UIViewController {
-    return UIStoryboard(name: forStoryboardName, bundle: nil).instantiateInitialViewController()!
-}
-
-class TemplateImageView: UIImageView {
-    @IBInspectable var templateImage: UIImage? {
-        didSet {
-            image = templateImage?.withRenderingMode(.alwaysTemplate)
-        }
-    }
-}
+//
+//func viewController(forStoryboardName: String) -> UIViewController {
+//    return UIStoryboard(name: forStoryboardName, bundle: nil).instantiateInitialViewController()!
+//}
+//
+//class TemplateImageView: UIImageView {
+//    @IBInspectable var templateImage: UIImage? {
+//        didSet {
+//            image = templateImage?.withRenderingMode(.alwaysTemplate)
+//        }
+//    }
+//}
