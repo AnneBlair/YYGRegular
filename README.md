@@ -152,7 +152,7 @@ let IdNum: String = "\\d{15}(\\d\\d[0-9xX])?"
 let isIphoneNum: String = "1\\d{10}"
 
 17./// 邮政编码
-let zipCode: String = "[1-9]\\d{5}"
+let zipCode: String = "[0-9]\\d{5}"
 ```
 
 ##新增加一些方法的扩展。如：UIView的扩展，富文本的扩展，UIColor的扩展，线程安全使用的扩展
